@@ -1,41 +1,46 @@
-Npontu Tracker
+# Npontu Tracker
+### Applications Support Team Activity Tracking and Reporting System
 
-Applications Support Team Activity Management System
+Npontu Tracker is a Laravel-based web application designed to help applications support teams record, manage, monitor and report daily operational activities.
 
-Npontu Tracker is a Laravel-based web application designed to help applications support teams record daily activities, monitor task progress, document updates and maintain activity histories for reporting and operational handover.
+The system provides a centralized platform for tracking work progress, recording updates and remarks, maintaining activity histories, and supporting effective team handovers.
 
-## Features
+## Key Features
 
-- **User Authentication:** Secure login for authorized users.
-- **Role-Based Access:** Administrator and staff workflows.
+- **Authentication and Access Control:** Secure login and role-based access for administrators and staff.
 - **Activity Management:** Create and manage daily support activities.
-- **Status Tracking:** Update activities as pending or completed.
-- **Remarks and Updates:** Record comments and progress updates.
-- **Activity History:** Maintain a record of activity updates and timestamps.
-- **Daily Handover:** Review activities and identify outstanding tasks.
-- **Reporting:** Search and review activity histories over selected periods.
-- **Excel Export:** Export activity records and reports.
+- **Activity Status Tracking:** Update activities as pending or done.
+- **Remarks and Updates:** Record progress notes and additional information.
+- **Staff Information:** Maintain personnel information for accountability.
+- **Activity History:** Track activity updates and their associated timestamps.
+- **Daily Activity Dashboard:** Review activities and their current statuses.
+- **Activity Reassignment:** Support the transfer of activities between personnel.
+- **Reporting and Filtering:** Search and review activity histories over selected periods.
+- **Excel Export:** Export activity history and reports for further analysis.
+- **Operational Handover:** Provide visibility into outstanding activities to support shift handovers.
 
 ## Technology Stack
 
-- PHP 8.3+
-- Laravel 13
-- MySQL-compatible database
-- HTML, CSS and JavaScript
-- Bootstrap / frontend assets used by the project
-- Vite and npm
+| Component | Technology |
+|---|---|
+| Backend | PHP |
+| Framework | Laravel 13 |
+| Database | MySQL-compatible database |
+| Frontend | HTML, CSS, JavaScript |
+| Styling | Bootstrap / Tailwind CSS (as used in the project) |
+| Asset Bundling | Vite |
+| Reporting | Laravel Excel |
+| Version Control | Git and GitHub |
 
 ## Requirements
 
-Install the following before running the application:
+Before installing the application, ensure that you have:
 
-1. PHP 8.3 or later.
-2. Composer.
-3. MySQL or a compatible database.
-4. Node.js and npm.
-5. Git.
-
-PHP extensions required by Laravel and the project's Composer dependencies must also be enabled.
+- PHP 8.3 or later
+- Composer
+- MySQL or a compatible database
+- Node.js and npm
+- Git
 
 ## Installation and Setup
 
@@ -45,7 +50,7 @@ PHP extensions required by Laravel and the project's Composer dependencies must 
 git clone https://github.com/asuoebenezer/npontu-tracker.git
 ```
 
-Enter the project directory:
+Navigate into the project directory:
 
 ```bash
 cd npontu-tracker
@@ -59,21 +64,33 @@ composer install
 
 ### 3. Configure environment variables
 
-Create your local environment file.
+Create your local environment file:
 
-**Windows PowerShell:**
-
-```powershell
-Copy-Item .env.example .env
+```bash
+copy .env.example .env
 ```
 
-**Linux/macOS:**
+On macOS or Linux, use:
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and configure your database connection:
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+### 4. Configure the database
+
+Create a database in MySQL, for example:
+
+```sql
+CREATE DATABASE npontu_tracker;
+```
+
+Open your `.env` file and configure your database connection:
 
 ```env
 DB_CONNECTION=mysql
@@ -84,17 +101,15 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Create the database named `npontu_tracker` in your MySQL server before proceeding.
+Replace the database username and password with your local database credentials.
 
-Use your own database credentials. Do not publish your `.env` file.
-
-### 4. Generate the application key
+### 5. Run database migrations
 
 ```bash
-php artisan key:generate
+php artisan migrate
 ```
 
-### 5. Install frontend dependencies
+### 6. Install frontend dependencies
 
 ```bash
 npm install
@@ -106,14 +121,6 @@ Build the frontend assets:
 npm run build
 ```
 
-### 6. Run database migrations
-
-```bash
-php artisan migrate
-```
-
-This creates the database tables required by the application.
-
 ### 7. Start the application
 
 ```bash
@@ -122,42 +129,16 @@ php artisan serve
 
 Open the following address in your browser:
 
-```text
 http://127.0.0.1:8000
-```
 
-## Creating an Administrator Account
+## User Access
 
-After configuring the database and running migrations, create an administrator account using Laravel Tinker:
+The application supports role-based access for administrators and staff.
 
-```bash
-php artisan tinker
-```
+- **Administrator:** Manages and oversees application activities and personnel.
+- **Staff:** Accesses assigned activities and records progress updates.
 
-Then execute the following, replacing the sample password with a strong password of your choice:
-
-```php
-DB::table('users')->updateOrInsert(
-    ['email' => 'admin@example.com'],
-    [
-        'name' => 'System Administrator',
-        'password' => Hash::make('Choose-A-Strong-Password'),
-        'role' => 'admin',
-        'is_active' => 1,
-        'email_verified_at' => now(),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]
-);
-```
-
-Exit Tinker:
-
-```php
-exit
-```
-
-Use the email and password you configured to sign in.
+An administrator account must be configured before testing the administrator features. Use the demonstration credentials supplied separately by the project author, where available.
 
 ## Project Structure
 
@@ -165,13 +146,17 @@ Use the email and password you configured to sign in.
 npontu-tracker/
 ├── app/
 │   ├── Http/
+│   │   └── Controllers/
 │   └── Models/
 ├── bootstrap/
 ├── config/
 ├── database/
-│   └── migrations/
+│   ├── migrations/
+│   └── seeders/
 ├── public/
 ├── resources/
+│   ├── css/
+│   ├── js/
 │   └── views/
 ├── routes/
 ├── storage/
@@ -185,22 +170,22 @@ npontu-tracker/
 
 ## Security
 
-- Keep database credentials and application keys private.
-- Do not commit `.env` files or production secrets.
+- Never commit `.env` files or production credentials.
+- Keep database passwords and application keys private.
 - Use strong passwords for administrator accounts.
-- Configure production environment variables securely.
-- Use HTTPS when deploying the application publicly.
+- Configure environment variables locally before running the application.
+- Do not expose real user or organizational information in demonstration environments.
 
 ## Author
 
 **Ebenezer Asubonteng**
 
-GitHub: [@asuoebenezer](https://github.com/asuoebenezer)
+GitHub: https://github.com/asuoebenezer
 
 ## Repository
 
-[https://github.com/asuoebenezer/npontu-tracker](https://github.com/asuoebenezer/npontu-tracker)
+https://github.com/asuoebenezer/npontu-tracker
 
 ---
 
-*Developed as an applications support activity management solution.*
+Developed as an Applications Support Team Activity Tracking and Reporting System.
